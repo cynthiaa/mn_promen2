@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage[final]{listings}
+\usepackage{color}
+\usepackage{float}
+\usepackage{xcolor}
+
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage[latin1]{inputenc} 
+\usepackage[spanish]{babel}
+\lstset{language=Octave}
+
+\begin{document}
+\begin{center}
+\textbf{
+{\LARGE Promen 2, Problema 3\\
+Embalse retarddor de crecidas\\
+M\'etodos Num\'ericos\\
+ITBA\\
+}}
+
+\end{center}
+\vspace{8cm}
+
+Primer autor:\\
+\textbf{Conrado Mader Blanco} - Legajo 51270 (Comisi\'on S, lunes)\\
+\textit{cmaderbl@alu.itba.edu.ar}\\
+
+Co-autores:\\
+\textbf{Betina Cynthia Mamani} - Legajo 52310 (Comisi\'on B, lunes)\\
+\textbf{Federico Ramundo} - Legajo 51596 (Comisi\'on S, lunes)\\
+\newpage
+
+\section{Enunciado completo del problema}
+\subsection{Determinaci\'on del problema}
+
+La determinaci\'on del problema se realiza de acuerdo a las pautas determinadas por la c\'atedra. Para ello, se ejecuta el comando: octave nro\_prob.m\\
+
+El mismo determina que el problema a realizar es el n\'umero 3.\\
+\subsection {Enunciado}
+
+Suponga un embalse que supondremos tiene como principal prop\'osito actuar como retardador de crecidas en un curso de agua. Al ingresar agua al embalse por alg\'un afluente o una tormenta, el nivel de agua en el mismo asciende y si se excede cierta cota H entonces se produce un caudal de salida desde el embalse hacia aguas abajo. Se conoce el flujo de entrada al embalse en funci\'on de tiempo (lo denominaremos hidrograma de entrada $E(t))$. Para el hidrograma de salida $S(t)$ (flujo de salida del embalse hacia aguas abajo) se tiene una estructura (el vertedero) en la que $S(t)$ depende de la diferencias de alturas $h ? H$, donde ambas alturas se miden desde el punto mas profundo del embalse siendo h la distancia entre la superficie libre y ese punto de mayor profundidad. Del embalse se conoce el \'area $A(z)$ de cada secci\'on horizontal del mismo como funci\'on de la distancia z al punto mas profundo.
+Se puede plantear un modelo elemental de flujos de entrada y salida para obtener el siguiente problema de valor inicial del cual es soluci\'on $h(t)$:\\
+\begin{displaymath}
+h(t) =\frac{(E(t) - S(t))}{A(h(t))}
+\end{displaymath}
+\begin{displaymath}
+ t \in [0, T ],	h(0) = h0
+\end{displaymath}
+De las funciones $A(h)$ y $E(t)$ se dispondr\'a solo la informaci\'on de una tabla de valores en las que se podr\'a interpolar en el caso que hiciesen falta valores no registrados. Se supondr\'a
+que 
+\begin{displaymath}
+S(t) = \left\{
+\begin{array}{cl}
+C \sqrt{(h(t) -H)^3}&\mbox{si } h(t)>H\\
+0&\mbox{si } h(t)<H
+\end{array}\right.
+\end{displaymath}
+ con $C$ una constante positiva.\\
+ 
+ \begin{enumerate}
+\item Se desea analizar el comportamiento del embalse como atenuador del pico de crecida y como retardador de la aparici\'on de dicho pico. Supondremos conocido el flujo de entrada $E(t)$ con $t$ en miles de segundos y $E$ en $m^3/s$ como indica la siguiente tabla:\\\\
+ \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+$t$& 0.0 &  1.8 & 3.6 & 5.4 & 7.2 & 9.0 & 10.8 & 12.6 & 14.4 & 16.2 & 18.0\\ \hline
+E &  0 & 30 & 150 & 400 & 500 & 460 & 350 & 230 & 130 & 60 & 10\\ \hline
+\end{tabular}\\
+\\De la funci\'on $A(h)$ se conoce la siguiente tabla de valores con $h$ en metros y $A$ en miles de $m^2$:\\\\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+h & 0.0 &  2.5 & 5.0 & 7.5 & 10.0 & 12.5 & 15.0 & 17.5 & 20.0 & 22.5 \\ \hline
+$A$ &  0.0 & 0.1 & 1.4 & 7.0 & 18.5 & 42.0 & 80.0 & 140.0 & 230.0 & 330.0 \\ \hline
+\end{tabular}\\
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+$h$& 25.0 & 27.5 & 30.0 & 32.5\\ \hline
+$A$& 25.0 & 27.5 & 30.0 & 32.5\\ \hline
+\end{tabular}\\
+\\Obtener $h(t)$ integrando el problema de valor inicial con el m\'etodo de Runge-Kutta de orden 4 suponiendo un paso de 100 segundos con $T = 30000$ segundos si $H = 30$ metros, $C=30$(en el MKS) y $h0 =H$. Para evaluar las funciones $E$ y $A$ se sugiere usar el procedimiento $interp1$ en Octave para implementar una interpolaci\'on por splines. Para $t$ mayor que 18000 segundos suponga que $E(t)$ es cero.\\
+ 
+\item Representar gr\'aficamente $h(t)$ identificando su valor m\'aximo y el instante en que se produce.\\
+\item En un mismo gr\'afico representar $E(t)$ y $S(t)$ y comentar el efecto que produce el embalse atenuando y retardando el fen\'omeno de crecida. Con los resultados obtenidos estimar la raz\'on $R$ entre los picos de $E$ y $S$ as\'i como el retardo $D$ entre la aparici\'on de ambos picos.\\
+ 
+\item Completar una tabla con los valores de $R$ y $D$ si los datos de entrada de $E$ se multiplican por: 0.5, 0.75, 1 (que fueron obtenidos),1.25 y 1.5.\\
+ \end{enumerate}
+ \newpage
+ \section{Planteo del problema y resultados obtenidos}
+ 
+ \subsection{item 1}
+ \subsection{item 2}
+ \subsection{item 3}
+ \subsection{item 4}
+ 
+ \newpage
+ \section{C\'odigos Octave}
+ \begin{lstlisting}[frame=tblr,breaklines=true]
+function ret = nro_prob( legajos )
+
+%
+% Determina el n\'umero de problema a realizar por el grupo
+%
+
+    ret = rem( min(legajos), 4 ) + 1;
+
+end
+
+disp( nro_prob( [ 51270 52310 51596 ] ) );
+
+\end{lstlisting}
+\newpage
+\section{Conclusiones}
+
+Podemos concluir que el m\'etodo de Runge-Kutta de orden 4 resulta muy \'util a la hora de aproximar una funci\'on, conociendo su derivada y un valor inicial. Permite aproximarse al valor real de la funci\'on con un error mucho menor que otros m\'etodos como el de Heun (orden 2) o el de Euler (orden 1), y el hecho de automatizar el proceso evita la parte engorrosa de calcular todos los t\'erminos intermedios K1, K2, K3 y K4 que se necesitan para pasar de un  $y_k$ a un $y_{k+1}$.\\
+
+Adem\'as, consideramos de gran utilidad  la utilizaci\'on del Software Octave con el objetivo de resolver problemas f\'isico-matem\'aticos. El lenguaje utilizado por Octave no es tipado, lo que resulta muy c\'omodo a la hora de realizar c\'alculos y programar funciones, a lo que si a esto se le suma la potencia del GNU Plot, resulta realmente pr\'actico dado que es posible computar y graficar todos los resultados de los problemas planteados.\\
+
+Por \'ultimo, cabe destacar que la precisi\'on con la que se obtuvo el resultado puede ser ajustado por el usuario, obviamente dentro de las limitaciones de la arquitectura del sistema en que se est\'a trabajando.\\
+
+Este trabajo nos result\'o interesante como equipo dado que refleja el hecho de que los conocimientos adquiridos en la materia pueden ser aplicados perfectamente a problemas de la vida real, ayudando a minimizar costos, agilizar procesos, etc. 
+
+\end{document}
