@@ -1,4 +1,4 @@
-1; % No es un archivo de función
+1;
 
 function y = interpolar(X, Y, x)
 
@@ -6,9 +6,12 @@ function y = interpolar(X, Y, x)
 
 end
 
-function y = E(t)
+function y = E(t, factor)
 
-    return interpolate([0: 1800: 18000], [0, 30, 150, 400, 500, 460, 350, 230, 130, 60, 10], t);
+    if(t > 18000)
+        return 0;
+
+    return interpolate([0: 1800: 18000], [0, 30, 150, 400, 500, 460, 350, 230, 130, 60, 10] .* factor, t);
 
 end
 
@@ -27,13 +30,13 @@ function y = S(h, h0, C)
 
 end
 
-function y = f(tk, yk, h0, C)
+function y = f(tk, yk, h0, C, factor)
 
-    return (E(tk) - S(yk, h0, C)) / A(yk);
+    return (E(tk, factor) - S(yk, h0, C)) / A(yk);
 
 end
 
-function Y = rungeKutta4(ti, tf, step, h0, C)
+function Y = rungeKutta4(ti, tf, step, h0, C, factor)
 
     Y = [h0];
 
@@ -41,10 +44,10 @@ function Y = rungeKutta4(ti, tf, step, h0, C)
 
         yk = Y(lenght(Y));
 
-        k1 = step * f(t, yk, h0, C);
-        k2 = step * f(t + step/2, yk + k1/2, h0, C);
-        k3 = step * f(t + step/2, yk + k2/2, h0, C);
-        k4 = step * f(t + step, yk + k3, h0, C);
+        k1 = step * f(t, yk, h0, C, factor);
+        k2 = step * f(t + step/2, yk + k1/2, h0, C, factor);
+        k3 = step * f(t + step/2, yk + k2/2, h0, C, factor);
+        k4 = step * f(t + step, yk + k3, h0, C, factor);
 
         Y = [Y, yk + (k1 + 2*k2 + 2*k3 + k4)/6];
 
