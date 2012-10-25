@@ -6,7 +6,7 @@ function [vectorE, vectorS] = calcular_vectores(H, T, C, factor)
 
     vectorS = [];
 
-    for h:H
+    for h=H
 
         vectorS = [vectorS, S(h, H(1), C)];
 
@@ -14,7 +14,7 @@ function [vectorE, vectorS] = calcular_vectores(H, T, C, factor)
 
     vectorE = [];
 
-    for t:T
+    for t=T
 
         vectorE = [vectorE, E(t, factor)];
 
@@ -26,8 +26,10 @@ function graficar_item3(H, T, C, nombre, factor)
 
     [vectorE, vectorS] = calcular_vectores(H, T, C, factor);
 
-    plot(T, vectorE);
-    plot(T, vectorS);
+    plot(T, vectorE, 'r', T, vectorS, 'b');
+    title('E(t) -en rojo- y S(t) -en azul- en función del tiempo');
+    xlabel('Tiempo[seg]');
+    ylabel('E(t) y S(t)');
 
     print(nombre, '-dpng');
 

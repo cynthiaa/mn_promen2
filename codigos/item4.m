@@ -13,7 +13,7 @@ function tabla_item4(H, T, C)
 
     end
 
-    printf("\nFactor\tR\tD\n");
+    printf("\n\tFactor\tR\tD\n");
 
     transpose(tabla)
 
