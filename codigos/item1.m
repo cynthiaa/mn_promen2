@@ -36,7 +36,7 @@ function y = f(tk, yk, h0, C, factor)
 
 end
 
-function Y = rungeKutta4(ti, tf, step, h0, C, factor)
+function Y = runge_kutta4(ti, tf, step, h0, C, factor)
 
     Y = [h0];
 

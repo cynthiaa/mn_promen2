@@ -32,3 +32,16 @@ function graficar_item3(H, T, C, nombre, factor)
     print(nombre, '-dpng');
 
 end
+
+function [R, D] = calcular_picos(H, T, C, factor)
+
+    [vectorE, vectorS] = calcular_vectores(H, T, C, factor);
+
+    [maxE, posMaxE] = max(vectorE);
+    [maxS, posMaxS] = max(vectorS);
+
+    R = maxE / maxS;
+
+    D = abs(T(posMaxE) - T(posMaxS));
+
+end
