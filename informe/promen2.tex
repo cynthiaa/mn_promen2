@@ -19,11 +19,11 @@
 \begin{center}
 \textbf{
 {\LARGE Promen 2, Problema 3\\
-Embalse retarddor de crecidas\\
+Embalse retardador de crecidas\\
 M\'etodos Num\'ericos\\
 ITBA\\
 }}
-
+DUDAS: unidades de M en el 2 son metros? La conclusion entrre E y S?
 \end{center}
 \vspace{8cm}
 
@@ -92,17 +92,75 @@ $A$& 25.0 & 27.5 & 30.0 & 32.5\\ \hline
  \section{Planteo del problema y resultados obtenidos}
  
  \subsection{item 1}
- \subsection{item 2}
- \subsection{item 3}
- \subsection{item 4}
  
+ Los valores de $h(t)$ obtenidos son:\\
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+$k$ & $t_k$ & $h(t_k)$ \\ \hline
+
+
+\end{tabular}
+\end{center}
+ 
+ 
+ \subsection{item 2}
+El gr\'afico de la aproximaci\'on de $h(t)$ puede verse en la figura \ref{fig:item2}.\\
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{../graficos/grafico_item2.png}
+\caption{ Gr\'afico de la aproximaci\'on de $h(t)$ en funci\'on del tiempo.}
+\label{fig:item2}
+\end{figure}
+Los resultados obtenidos son:\\
+\begin{displaymath}
+ \begin{array}{cc}
+$m\'aximo $ =  32.884 m\\
+$instante $ = 14100 seg
+\end{array}
+ \end{displaymath}
+
+\subsection{item 3}
+ 
+En la figura \ref{fig:item3} pueden observarse graficadas las funciones $E(t)$ y $S(t)$.\\
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{../graficos/grafico_item3.png}
+\caption{ Gr\'afico de $E(t)$ y $S(t)$ en funci\'on del tiempo.}
+\label{fig:item3}
+\end{figure}
+El efecto que produce el embalse atenuando y retardando el fen\'omeno de credida es.....\\
+La raz\'on $R$ entre los picos de $E$ y $S$, y el retardo $D$ entre ambos picos, seg\'un los c\'alculos obtenidos es el siguiente:
+ \begin{displaymath}
+ \begin{array}{cc}
+R =  3.4088\\
+D =  6700 m
+\end{array}
+ \end{displaymath}
+ 
+ \subsection{item 4}
+ Multiplicando $E(t)$ por los siguientes factores, los resultados de la relaci\'on $R$ entre los picos de $E(t)$ y $S(t)$ y la distancia $D$ corresponden a la siguiente tabla:\\
+\begin{center}
+ \begin{tabular}{|c|c|c|}
+ \hline
+ Factor & $R$ & $D [m]$ \\\hline
+   0.50 &   1.7044 & 6700 \\\hline
+   0.75 &   2.5566 & 6700 \\\hline
+   1.00 &   3.4088 & 6700 \\\hline
+   1.25 &   4.2610 & 6700 \\\hline
+   1.50 &   5.1133 & 6700 \\\hline
+
+ \end{tabular}
+ \end{center}
+ UNIDADES? metros?
  \newpage
  \section{C\'odigos Octave}
  \begin{lstlisting}[frame=tblr,breaklines=true]
 function ret = nro_prob( legajos )
 
 %
-% Determina el n\'umero de problema a realizar por el grupo
+% Determina el n\'umero de problema a 
+% realizar por el grupo
 %
 
     ret = rem( min(legajos), 4 ) + 1;
@@ -112,6 +170,226 @@ end
 disp( nro_prob( [ 51270 52310 51596 ] ) );
 
 \end{lstlisting}
+\begin{itemize}
+\item \'Item 1
+\begin{lstlisting}[frame=tblr,breaklines=true]
+
+%
+% Interpola por spline utilizando el método
+%  interp1 sugerido
+%
+
+function y = interpolar(X, Y, x)
+
+    [y] = interp1(X, Y, [x], 'spline');
+
+end
+
+%
+% Evalua la función E de entrada de agua 
+% al embalse
+%
+
+function y = E(t, factor)
+
+    if(t > 18000)
+        y = 0;
+
+    else
+        y = interpolar([0: 1800: 18001], [0, 30, 150, 400, 500, 460, 350, 230, 130, 60, 10] .* factor, t);
+    end
+
+end
+
+%
+% Evalua la función A de sección horizontal 
+% del embalse
+%
+
+function y = A(t)
+
+    a = [0: 2.5: 35];
+    b = [0, 100, 1400, 7000, 18500, 42000, 80000, 140000, 230000, 330000, 480000, 700000, 1000000, 1100000, 1600000];
+
+    y = interpolar(a, b, t);
+
+end
+
+%
+% Evalua la función S de salida de agua del embalse
+%
+
+function y = S(h, h0, C)
+
+    if(h <= h0)
+        y = 0;
+
+    else
+        y = C * (h - h0) ^ (3/2);
+    end
+
+end
+
+%
+% Función f(t_k, y_k) utilizada por el método de 
+% Runge-Kutta para aproximar h(t). 
+% Equivale a la función h'(t) del enunciado.
+%
+
+function y = f(tk, yk, h0, C, factor)
+
+    y = (E(tk, factor) - S(yk, h0, C)) / A(yk);
+
+end
+
+%
+% Ejecuta el método de Runge-Kutta
+% de orden 4
+%
+
+function Y = runge_kutta4(ti, tf, step, h0, C, factor)
+
+    Y = [h0];
+
+    for t = ti:step:(tf - step)
+
+        yk = Y(length(Y));
+
+        k1 = step * f(t, yk, h0, C, factor);
+        k2 = step * f(t + step/2, yk + k1/2, h0, C, factor);
+        k3 = step * f(t + step/2, yk + k2/2, h0, C, factor);
+        k4 = step * f(t + step, yk + k3, h0, C, factor);
+
+        Y = [Y, yk + (k1 + 2*k2 + 2*k3 + k4)/6];
+
+    end
+
+end
+\end{lstlisting}
+\item \'Item 2
+\begin{lstlisting}[frame=tblr,breaklines=true]
+
+%
+% Grafica la función h(t)
+%
+
+function graficar_item2(H, T, nombre)
+
+    plot(T, H);
+    title('H(t) en funci\'on del tiempo');
+    xlabel('Tiempo[seg]');
+    ylabel('H(t)');
+
+    print(nombre, '-dpng');
+
+end
+
+%
+% Calcula el maximo en h(t)
+%
+
+function [M, tM] = calcular_maximo(H, T)
+
+    [M, tM] = max(H);
+
+    tM = T(tM);
+
+end
+
+\end{lstlisting}
+\item \'Item 3
+\begin{lstlisting}[frame=tblr,breaklines=true]
+source("item1.m");
+
+%
+% Calcula dos vectores
+% equivalentes a E(t) y a S(t)
+%
+
+function [vectorE, vectorS] = calcular_vectores(H, T, C, factor)
+
+    vectorS = [];
+
+    for h=H
+
+        vectorS = [vectorS, S(h, H(1), C)];
+
+    end
+
+    vectorE = [];
+
+    for t=T
+
+        vectorE = [vectorE, E(t, factor)];
+
+    end
+
+end
+
+%
+% Grafica E(t) y S(t)
+%
+
+function graficar_item3(H, T, C, nombre, factor)
+
+    [vectorE, vectorS] = calcular_vectores(H, T, C, factor);
+
+    plot(T, vectorE, 'r', T, vectorS, 'b');
+    title('E(t) -en rojo- y S(t) -en azul- en funci\'on del tiempo');
+    xlabel('Tiempo[seg]');
+    ylabel('E(t) y S(t)');
+
+    print(nombre, '-dpng');
+
+end
+
+%
+% Calcula los picos y el retardo entre ellos
+%
+
+function [R, D] = calcular_picos(H, T, C, factor)
+
+    [vectorE, vectorS] = calcular_vectores(H, T, C, factor);
+
+    [maxE, posMaxE] = max(vectorE);
+    [maxS, posMaxS] = max(vectorS);
+
+    R = maxE / maxS;
+
+    D = abs(T(posMaxE) - T(posMaxS));
+
+end
+
+
+\end{lstlisting}
+\item \'Item 4
+\begin{lstlisting}[frame=tblr,breaklines=true]
+source("item3.m");
+
+%
+% Crea la tabla con los valores de R y D 
+% multiplicando E por 0.5, 0.75, 1, 1.25 y 1.5
+%
+
+function tabla_item4(H, T, C)
+
+    tabla = [];
+
+    for factor = 0.5:0.25:1.5
+
+        [R, D] = calcular_picos(H, T, C, factor);
+        tabla = [tabla, transpose([factor, R, D])];
+
+    end
+
+    printf("\n\tFactor\tR\tD\n");
+
+    transpose(tabla)
+
+end
+
+\end{lstlisting}
+\end{itemize}
 \newpage
 \section{Conclusiones}
 
