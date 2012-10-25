@@ -6,7 +6,7 @@ function ret = nro_prob( legajos )
 % Determina el número de problema a realizar por el grupo
 %
 
-    ret = rem( min(legajos), 4 ) + 1;
+    ret = rem( max(legajos), 4 ) + 1;
 
 end
 
