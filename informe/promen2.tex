@@ -72,13 +72,13 @@ E &  0 & 30 & 150 & 400 & 500 & 460 & 350 & 230 & 130 & 60 & 10\\ \hline
 \\De la funci\'on $A(h)$ se conoce la siguiente tabla de valores con $h$ en metros y $A$ en miles de $m^2$:\\\\
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
-h & 0.0 &  2.5 & 5.0 & 7.5 & 10.0 & 12.5 & 15.0 & 17.5 & 20.0 & 22.5 \\ \hline
+$h$ & 0.0 &  2.5 & 5.0 & 7.5 & 10.0 & 12.5 & 15.0 & 17.5 & 20.0 & 22.5 \\ \hline
 $A$ &  0.0 & 0.1 & 1.4 & 7.0 & 18.5 & 42.0 & 80.0 & 140.0 & 230.0 & 330.0 \\ \hline
-\end{tabular}\\
-\begin{tabular}{|c|c|c|c|c|}
+\end{tabular}\\\\
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-$h$& 25.0 & 27.5 & 30.0 & 32.5\\ \hline
-$A$& 25.0 & 27.5 & 30.0 & 32.5\\ \hline
+$h$& 25.0 & 27.5 & 30.0 & 32.5 & 35.0 \\ \hline
+$A$& 480.0 & 700.0 & 1000.0 & 1100.0 & 1600.0 \\ \hline
 \end{tabular}\\
 \\Obtener $h(t)$ integrando el problema de valor inicial con el m\'etodo de Runge-Kutta de orden 4 suponiendo un paso de 100 segundos con $T = 30000$ segundos si $H = 30$ metros, $C=30$(en el MKS) y $h0 =H$. Para evaluar las funciones $E$ y $A$ se sugiere usar el procedimiento $interp1$ en Octave para implementar una interpolaci\'on por splines. Para $t$ mayor que 18000 segundos suponga que $E(t)$ es cero.\\
  
