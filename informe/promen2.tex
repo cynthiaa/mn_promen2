@@ -23,7 +23,6 @@ Embalse retardador de crecidas\\
 M\'etodos Num\'ericos\\
 ITBA\\
 }}
-DUDAS: unidades de M en el 2 son metros? La conclusion entrre E y S?
 \end{center}
 \vspace{8cm}
 
@@ -93,16 +92,7 @@ $A$& 25.0 & 27.5 & 30.0 & 32.5\\ \hline
  
  \subsection{item 1}
  
- Los valores de $h(t)$ obtenidos son:\\
-\begin{center}
-\begin{tabular}{|c|c|c|}
-\hline
-$k$ & $t_k$ & $h(t_k)$ \\ \hline
-
-
-\end{tabular}
-\end{center}
- 
+Utilizando el m\'etodo de Runge-Kutta de orden 4 obtuvimos una aproximaci\'on a $h(t)$ cuyos valores no mostramos a continuaci'on dado que al aproximar de $t = 0$ a $30000$ con un salto de $100$ obtuvimos una tabla de 301 entradas, lo cual resulta muy extenso. El gr\'afico pertinente a $h(t)$ puede verse en el siguiente item.
  
  \subsection{item 2}
 El gr\'afico de la aproximaci\'on de $h(t)$ puede verse en la figura \ref{fig:item2}.\\
@@ -112,7 +102,7 @@ El gr\'afico de la aproximaci\'on de $h(t)$ puede verse en la figura \ref{fig:it
 \caption{ Gr\'afico de la aproximaci\'on de $h(t)$ en funci\'on del tiempo.}
 \label{fig:item2}
 \end{figure}
-Los resultados obtenidos son:\\
+Los resultados que obtuvimos respecto al m\'aximo de $h(t)$ y al tiempo en el que ocurre son:\\
 \begin{displaymath}
  \begin{array}{cc}
 $m\'aximo $ =  32.884 m\\
@@ -129,21 +119,21 @@ En la figura \ref{fig:item3} pueden observarse graficadas las funciones $E(t)$ y
 \caption{ Gr\'afico de $E(t)$ y $S(t)$ en funci\'on del tiempo.}
 \label{fig:item3}
 \end{figure}
-El efecto que produce el embalse atenuando y retardando el fen\'omeno de credida es.....\\
+El efecto que produce el embalse atenuando y retardando el fen\'meno de crecida ....
 La raz\'on $R$ entre los picos de $E$ y $S$, y el retardo $D$ entre ambos picos, seg\'un los c\'alculos obtenidos es el siguiente:
  \begin{displaymath}
  \begin{array}{cc}
 R =  3.4088\\
-D =  6700 m
+D =  6700 seg
 \end{array}
  \end{displaymath}
  
  \subsection{item 4}
- Multiplicando $E(t)$ por los siguientes factores, los resultados de la relaci\'on $R$ entre los picos de $E(t)$ y $S(t)$ y la distancia $D$ corresponden a la siguiente tabla:\\
+Multiplicando $E(t)$ por los siguientes factores, los resultados que obtuvimos de la relaci\'on $R$ entre los picos de $E(t)$ y $S(t)$ y la distancia $D$ corresponden a la siguiente tabla:\\
 \begin{center}
  \begin{tabular}{|c|c|c|}
  \hline
- Factor & $R$ & $D [m]$ \\\hline
+ Factor & $R$ & $D [seg]$ \\\hline
    0.50 &   1.7044 & 6700 \\\hline
    0.75 &   2.5566 & 6700 \\\hline
    1.00 &   3.4088 & 6700 \\\hline
@@ -152,7 +142,6 @@ D =  6700 m
 
  \end{tabular}
  \end{center}
- UNIDADES? metros?
  \newpage
  \section{C\'odigos Octave}
  \begin{lstlisting}[frame=tblr,breaklines=true]
